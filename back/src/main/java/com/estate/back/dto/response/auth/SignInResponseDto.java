@@ -19,6 +19,8 @@ public class SignInResponseDto extends ResponseDto {
     private SignInResponseDto(String accessToken) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.accessToken = accessToken;
+        // expires 생성자를 int타입으로 해서 정수 타이핑 가능
+        // JWT 만료시간을 10시간으로 지정한 걸 초단위로 계산(10시간 * 60분 * 60초)
         this.expires = 10 * 60 * 60;
     }
 
