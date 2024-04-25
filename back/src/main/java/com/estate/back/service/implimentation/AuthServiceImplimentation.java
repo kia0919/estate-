@@ -20,18 +20,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImplimentation implements AuthService {
 
-    private final UserRepository UserRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
         
         try {
-            // 데이터베이스의 user테이블에서 해당하는 userId를 가직 있는 유저가 있는지 확인.
+
             String userId = dto.getUserId();
-            boolean existedUser = UserRepository.existsById(userId);
+            boolean existedUser = userRepository.existsByUserId(userId);
             if (existedUser) return ResponseDto.duplicatedId();
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -48,8 +48,20 @@ public class AuthServiceImplimentation implements AuthService {
 
     @Override
     public ResponseEntity<ResponseDto> emailAuth(EmailAuthRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'emailAuth'");
+        
+        try {
+
+            String userEmail = dto.getUserEmail();
+            boolean existedEmail = userRepository.existsByUserEmail(userEmail);
+            if (existedEmail) return ResponseDto.duplicatedEmail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+
     }
 
     @Override
