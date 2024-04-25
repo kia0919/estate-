@@ -27,6 +27,7 @@ public class AuthController {
 
     private final AuthService authService;
 
+    //# 로그인 요청
     @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn (
         @RequestBody @Valid SignInRequestDto requestBody

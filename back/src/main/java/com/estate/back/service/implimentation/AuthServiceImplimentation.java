@@ -40,8 +40,7 @@ public class AuthServiceImplimentation implements AuthService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-//# 응답처리
-
+    //# 아이디확인 응답처리
     @Override
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
         
@@ -60,6 +59,7 @@ public class AuthServiceImplimentation implements AuthService {
 
     }
 
+    //# 로그인 응답 처리
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
 
@@ -89,6 +89,7 @@ public class AuthServiceImplimentation implements AuthService {
 
     }
 
+    //# 이메일인증 응답 처리
     @Override
     public ResponseEntity<ResponseDto> emailAuth(EmailAuthRequestDto dto) {    
 
@@ -117,6 +118,7 @@ public class AuthServiceImplimentation implements AuthService {
 
     }
 
+    //# 이메일 인증 확인 응답 처리
     @Override
     public ResponseEntity<ResponseDto> emailAuthCheck(EmailAuthCheckRequestDto dto) {
         
@@ -137,6 +139,7 @@ public class AuthServiceImplimentation implements AuthService {
 
     }
 
+    //# 회원가입 응답 처리
     @Override
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
     

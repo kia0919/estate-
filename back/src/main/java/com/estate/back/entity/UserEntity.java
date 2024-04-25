@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//# 데이터베이스 Entity 생성
+
 // Estate 데이터베이스의 User 테이블과 매핑되는 Entity 클래스
 @Entity(name = "user")
 // 매핑되는 테이블은 "user"
