@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 // - JWT 암호화 알고리즘 HS256
 // - 비밀키는 환경변수에 있는 jwt.secret-key
 // - JWT 만료 기간 10시간 
-// TODO (이후 1시간)
+//? (이후 1시간)
 
 @Component
 public class JwtProvider {
