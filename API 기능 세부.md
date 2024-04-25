@@ -77,7 +77,8 @@
   
 1. request body의 데이터에 대해서 유효성 확인  
 1.1 만약 유효하지 않은 데이터이면 'VF' 응답 처리  
-  
+
+ 
 (userId, userPassword, userEmail, authNumber)  
   
 2. 데이터베이스의 user 테이블에서 해당하는 userId를 가지고 있는 유저가 있는지 확인  

@@ -1,6 +1,8 @@
 package com.estate.back.service.implimentation;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.estate.back.common.util.EmailAuthNumberUtil;
@@ -12,6 +14,7 @@ import com.estate.back.dto.request.auth.SignUpRequestDto;
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.auth.SignInResponseDto;
 import com.estate.back.entity.EmailAuthNumberEntity;
+import com.estate.back.entity.UserEntity;
 import com.estate.back.provider.MailProvider;
 import com.estate.back.repository.EmailAuthNumberRepository;
 import com.estate.back.repository.UserRepository;
@@ -28,7 +31,9 @@ public class AuthServiceImplimentation implements AuthService {
     private final UserRepository userRepository;
     private final EmailAuthNumberRepository emailAuthNumberRepository;
 
-    private final MailProvider MailProvider;
+    private final MailProvider mailProvider;
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
@@ -68,7 +73,7 @@ public class AuthServiceImplimentation implements AuthService {
             EmailAuthNumberEntity emailAuthNumberEntity = new EmailAuthNumberEntity(userEmail, authNumber);
             emailAuthNumberRepository.save(emailAuthNumberEntity);
 
-            MailProvider.mailAuthSend(userEmail, authNumber);
+            mailProvider.mailAuthSend(userEmail, authNumber);
 
         } catch (MessagingException exception) {
             exception.printStackTrace();
@@ -84,14 +89,52 @@ public class AuthServiceImplimentation implements AuthService {
 
     @Override
     public ResponseEntity<ResponseDto> emailAuthCheck(EmailAuthCheckRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'emailAuthCheck'");
+        
+        try {
+
+            String userEmail = dto.getUserEmail();
+            String authNumber = dto.getAuthNumber();
+
+            boolean isMatched = emailAuthNumberRepository.existsByEmailAndAuthNumber(userEmail, authNumber);
+            if(!isMatched) return ResponseDto.authenticationFailed();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+
     }
 
     @Override
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'signUp'");
+    
+        try {
+
+            String userId = dto.getUserId();
+            String userPassword = dto.getUserPassword();
+            String userEmail = dto.getUserEmail();
+            String AuthNumber = dto.getAuthNumber();
+
+            //# 데이터베이스의 user 테이블에서 해당하는 userId를 가지고 있는 유저가 있는지 확인   
+            boolean existedUser = userRepository.existsById(userId);
+            if (existedUser) return ResponseDto.duplicatedId();
+            //# 데이터베이스의 user 테이블에서 해당하는 userEmail를 가지고 있는 유저가 있는지 확인 
+            boolean existedEmail = userRepository.existsByUserEmail(userEmail);
+            if (existedEmail) return ResponseDto.duplicatedEmail();
+            //# 데이터베이스의 email_auth_number 테이블에서 해당하는 userEmail과 authNumber를 모두 가지고 있는 데이터가 있는지 확인  
+            boolean isMatched = emailAuthNumberRepository.existsByEmailAndAuthNumber(userEmail, AuthNumber);
+            if(!isMatched) return ResponseDto.authenticationFailed();
+            //# 사용자로부터 입력받은 userPassword를 암호화  
+            String encodeedPassword = passwordEncoder.encode(userPassword);
+            UserEntity userEntity = new UserEntity();
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+  
     }
     
 }

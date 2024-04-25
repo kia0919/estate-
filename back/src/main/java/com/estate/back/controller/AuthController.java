@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.estate.back.dto.request.auth.EmailAuthCheckRequestDto;
 import com.estate.back.dto.request.auth.EmailAuthRequestDto;
 import com.estate.back.dto.request.auth.IdCheckRequestDto;
 import com.estate.back.dto.response.ResponseDto;
@@ -23,6 +24,7 @@ public class AuthController {
 
     private final AuthService authService;
     
+    //# 아이디 중복확인 요청
     @PostMapping("/id-check")
     public ResponseEntity<ResponseDto> idCheck (
         @RequestBody @Valid IdCheckRequestDto requestBody
@@ -31,11 +33,21 @@ public class AuthController {
         return response;
     }
 
+    //# 이메일 인증 요청
     @PostMapping("/email-auth")
     public ResponseEntity<ResponseDto> emailAuth (
         @RequestBody @Valid EmailAuthRequestDto requestBody
     ){
         ResponseEntity<ResponseDto> response =authService.emailAuth(requestBody);
+        return response;
+    }
+
+    //# 이메일 인증 확인요청
+    @PostMapping("/email-auth-check")
+    public ResponseEntity<ResponseDto> emailAuthCheck (
+        @RequestBody @Valid EmailAuthCheckRequestDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = authService.emailAuthCheck(requestBody);
         return response;
     }
 
