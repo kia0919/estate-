@@ -6,6 +6,7 @@ import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
 import { IdCHeckRequestDto } from "src/apis/auth/dto/request/Index";
 import { IdCheckRequest } from "src/apis/auth";
+import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
 // 페이지 타입을 로그인, 회원가입을 두 페이지를 나타냄.
@@ -168,6 +169,26 @@ function SignUp({ onLinkClickHandler }: Props) {
     // 값이 false이면 'disable'-button full-width`으로 지정되어 회원가입 버튼 비활성화(사용자가 필수 정보 입력하지 않았거나, 조건 미충족시)
     const signUpButtonClass = `${isSignUpActive ? 'primary' : 'disable'}-button full-width`;
 
+    // function //
+    const idCheckResponse  = (result: ResponseDto | null) => {
+
+        
+
+        const idMessage = 
+            !result ? '서버에 문제가 있습니다.':
+            result.code === 'VF' ? '아이디는 빈값 혹은 공백으로만 이루어질 수 없습니다.' :
+            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.':
+            result.code === 'SU' ? '사용 가능한 아이디입니다.' : '';
+        const idError = !(result && result.code === 'SU')
+        const idCheck = !idError;
+
+        setIdMessage(idMessage);
+        setIdError(idError);
+        setIdCheck(idCheck);
+      
+    };
+
     //                    event handler                    //
     // Id입력란이 변경될때 onIdChangeHandler함수 호출
     const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -212,8 +233,6 @@ function SignUp({ onLinkClickHandler }: Props) {
         setPasswordCheckMessage(passwordCheckMessage);
     };
 
-
-
     const onPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setPasswordCheck(value);
@@ -250,7 +269,9 @@ function SignUp({ onLinkClickHandler }: Props) {
         if(!id || !id.trim()) return;
         
         const requestBody: IdCHeckRequestDto = { userId: id };
-        IdCheckRequest(requestBody);
+        // IdCheckRequest(requestBody)작업이 끝나면 then(해당 상황에선 콜백함수를 넣음)작업을 시작
+        // apis의 index idChec
+        IdCheckRequest(requestBody).then(idCheckResponse);
     };
 
     const onEmailButtonClickHandler = () => {

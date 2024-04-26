@@ -9,7 +9,8 @@ export const requestHandler = <T>(response: AxiosResponse<T, any>) => {
 
 // function: Request Error 처리 함수
 export const requestErrorHandler = (error: any) => {
-    const responseBody = error.response.data;
+    // response가 있을때만 data를 찾도록하기 위해 ? 붙임
+    const responseBody = error.response?.data;
     if (!responseBody) return null;
     return responseBody as ResponseDto;
-}
+};
