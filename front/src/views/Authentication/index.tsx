@@ -4,6 +4,8 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
+import { IdCHeckRequestDto } from "src/apis/auth/dto/request/Index";
+import { IdCheckRequest } from "src/apis/auth";
 
 //                    type                    //
 // 페이지 타입을 로그인, 회원가입을 두 페이지를 나타냄.
@@ -244,13 +246,11 @@ function SignUp({ onLinkClickHandler }: Props) {
 
     const onIdButtonClickHandler = () => {
         if(!idButtonStatus) return;
-
-        const idCheck = id !== 'admin';
-        setIdCheck(idCheck);
-        setIdError(!idCheck);
-
-        const idMessage = idCheck ? '사용 가능한 아이디입니다.' : '이미 사용중인 아이디입니다.';
-        setIdMessage(idMessage);
+        // trim: 제거해주는 것.
+        if(!id || !id.trim()) return;
+        
+        const requestBody: IdCHeckRequestDto = { userId: id };
+        IdCheckRequest(requestBody);
     };
 
     const onEmailButtonClickHandler = () => {
@@ -311,8 +311,8 @@ function SignUp({ onLinkClickHandler }: Props) {
 //                    component                    //
 export default function Authentication() {
 
-    //                    state                    //
-    const [page, setPage] = useState<AuthPage>('sign-in');
+    //                    state                    //: 초기화면
+    const [page, setPage] = useState<AuthPage>('sign-up');
 
     //                    event handler                    //
     const onLinkClickHandler = () => {
