@@ -1,0 +1,76 @@
+#authentication-wrapper {
+    display: flex;/*화면이 작아질때, 내부 요소들도 같이 자동으로 같이 작아짐*/
+    width: 100%; /*화면의 너비를 100% 이용*/
+    height: 100vh; /*화면의 높이를 100VH 이용*/
+    min-height: 1024px;/*화면이 너무 작아졌을 때의 작아지는 내부 요소들의 최소 높이.*/
+}
+
+.authentication-image-box {
+    min-width: 830px;/*최소 넓이가 830px이고, 830보다 작아지지 않게 함*/
+    background-size: cover;/*배경 이미지를 요소에 맞게 늘리거나 줄여주는데, cover를 이용하여 요소의 전체 영역을 채우도록 한다.*/
+}
+
+.authentication-box {
+    display: flex;
+    justify-content: center;/*수평방향으로 가운데 정렬*/
+    align-items: center;/*해당 요소를 수직방향으로 가운데 정렬*/
+    /*배경이미지를 채우고 남은 공간을 해당 요소가 모두 차지하게 해줌*/
+    flex-grow: 1;
+    min-width: 610px;/*화면이 작아졌을 때의 자동으로 작아지는 최소 너비.*/
+}
+
+.authentication-container {
+    display: flex;/*해당 컨테이너의 내부요소들을 유연하게 배치*/
+    flex-direction: column;/*해당 컨테이너의 내부요소들이 수직방향으로 배치가 된다.*/
+    align-items: center; /*수직 방향으로 가운데 정렬*/
+    gap: 24px;/*컨테이너의 아들class는 contents이므로, contents와 h1타이틀과의 간격에만 해당된다.*/
+
+    width: 380px;/*authentication-container의 화면 너비는 380px만큼*/
+}
+
+.authentication-title {
+    color: rgba(64, 64, 64, 1);/*해당 타이틀 내용의 폰트 색 지정*/
+}
+
+.authentication-contents {
+    display: flex;  /*내부 요소들을 유연하게.*/
+    flex-direction: column; /*내부 요소들을 수직방향으로 배치*/
+    align-items: center; /*수직방향으로  가운데 정렬*/
+    gap: 24px;  /*contents의 내부 요소인 input-container, authentication-button-container의 간격을 24px만큼 지정*/
+
+    width: 100%;/*해당 요소(아이템)의 화면 너비는 100%차지.???????강사님 질문해야 함.왜 공간이 지정된건지.*/
+}
+
+.authentication-input-container {
+    display: flex;/*authentication-input-container의 내부 요소들 유연하게*/
+    flex-direction: column; /*해당 내부요소들이 수직방향으로 배치*/
+    gap: 14px;  /*authentication-input-container의 내부요소인 2개의 input-box와의 간격을 14px*/
+
+    width: 100%; /*해당 요소의 화면 너비 100%차지.*/
+}
+
+.authentication-button-container {
+    display: flex; /*해당 요소의 내부 요소인 로그인, 회원가입 class를 유연하게 배치*/
+    flex-direction: column; /*내부 요소를 수직방향으로 배치*/
+    align-items: center;    /*수직 방향으로 중앙정렬*/
+    gap: 16px;  /*로그인과, 회원가입과의 간격을 16px로 지정*/
+
+    width: 100%; /*해당 요소를 화면의 100%*/
+}
+
+.authentication-sns-container {
+    display: flex;  /*내부 요소를 유연하게*/
+    /*내부 요소들 수직방향으로 배치, kakao, naver-button 요소는 sns-button-container의 내부요소이기 때문에 수직방향 배치 지정이 안됨.*/
+    flex-direction: column; 
+    align-items: center;    /*내부 요소를 가운데로 지정*/
+    gap: 16px; /*내부 요소인, kakao와naver버튼과의 간격 16px지정*/
+}
+
+.kakao-button {
+    background-image: url(../../assets/image/kakao-button.png);
+}
+
+.naver-button {
+    background-image: url(../../assets/image/naver-button.png);
+
+}

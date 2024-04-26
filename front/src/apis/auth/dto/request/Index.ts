@@ -1,3 +1,5 @@
+//# Request Dto 인터페이스 생성
+
 //# description: 로그인 Request Body DTO
 export interface SignInRequestDto {
     userId: string;
