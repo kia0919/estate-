@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { EMAIL_AUTH_CHECK_REQUEST_URL, EMAIL_AUTH_REQUEST_URL, ID_CHECK_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL } from 'src/constant/Index';
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCHeckRequestDto, SignInRequestDto, SignUpRequestDto } from './dto/request/Index';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignInRequestDto, SignUpRequestDto } from './dto/request/Index';
 import { SignInResponseDto } from './dto/response';
 import ResponseDto from '../response.dto';
 import { requestErrorHandler, requestHandler } from '..';
@@ -15,7 +15,7 @@ export const SignInRequest = async (requestBody: SignInRequestDto) => {
 };
 
 // function: 아이디 중복 확인 API 함수
-export const IdCheckRequest = async (requestBody: IdCHeckRequestDto) => {
+export const IdCheckRequest = async (requestBody: IdCheckRequestDto) => {
     const result = await axios
         .post(ID_CHECK_REQUEST_URL, requestBody)
         .then(requestHandler<ResponseDto>)

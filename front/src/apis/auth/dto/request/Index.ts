@@ -7,13 +7,13 @@ export interface SignInRequestDto {
 }
 
 //# description: 아이디 중복 확인 Request Body DTO
-export interface IdCHeckRequestDto {
+export interface IdCheckRequestDto {
     userId: string;
 }
 
 //# description: 이메일 인증 Request Body DTO
 export interface EmailAuthRequestDto {
-    userEMail: string;
+    userEmail: string;
 }
 
 //# description: 이메일 인증 확인 Request Body DTO
