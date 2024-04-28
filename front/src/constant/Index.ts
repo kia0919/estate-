@@ -1,5 +1,6 @@
 // # 공통 상수, 공통 함수, 공통 타입 생성
-// - 화면 URL
+// - 화면 URL 생성?
+
 // description : Navigation URL PATH 
 export const AUTH_PATH = '/authentication';
 export const SERVICE_PATH = '/service';
