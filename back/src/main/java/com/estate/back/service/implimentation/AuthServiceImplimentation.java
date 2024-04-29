@@ -155,15 +155,15 @@ public class AuthServiceImplimentation implements AuthService {
             boolean existedUser = userRepository.existsById(userId);
             if (existedUser) return ResponseDto.duplicatedId();
 
-            //# 데이터베이스의 user 테이블에서 해당하는 userEmail를 가지고 있는 유저가 있는지 확인하는 역할 
+            //# 데이터베이스의 user 테이블에서 해당하는 userEmail를 가지고 있는 유저가 있는지 확인하는 역할
             boolean existedEmail = userRepository.existsByUserEmail(userEmail);
             if (existedEmail) return ResponseDto.duplicatedEmail();
 
-            //# 데이터베이스의 email_auth_number 테이블에서 해당하는 userEmail과 authNumber를 모두 가지고 있는 데이터가 있는지 확인하는 역할  
+            //# 데이터베이스의 email_auth_number 테이블에서 해당하는 userEmail과 authNumber를 모두 가지고 있는 데이터가 있는지 확인하는 역할
             boolean isMatched = emailAuthNumberRepository.existsByEmailAndAuthNumber(userEmail, AuthNumber);
             if(!isMatched) return ResponseDto.authenticationFailed();
 
-            //# 사용자로부터 입력받은 userPassword를 암호화  
+            //# 사용자로부터 입력받은 userPassword를 암호화
             // passwordEncoder.encode(userPassword): userPassword를 암호화하는 역할
             // passwordEncoder: 암호화된 비밀번호를 저장하고, 사용자와 입력한 비밀번호와 비교하여 인증 수행
             // userEntity객체를 초기화, 데이터베이스에 저장됨

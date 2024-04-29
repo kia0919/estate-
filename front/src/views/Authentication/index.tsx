@@ -4,8 +4,8 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
-import { EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request/Index";
-import { EmailAuthRequest, IdCheckRequest } from "src/apis/auth";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request/Index";
+import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
@@ -170,22 +170,23 @@ function SignUp({ onLinkClickHandler }: Props) {
     const signUpButtonClass = `${isSignUpActive ? 'primary' : 'disable'}-button full-width`;
 
     // function //
-    const idCheckResponse  = (result: ResponseDto | null) => {
+    const idCheckResponse = (result: ResponseDto | null) => {
 
         const idMessage = 
-            !result ? '서버에 문제가 있습니다.':
-            result.code === 'VF' ? '아이디는 빈값 혹은 공백으로만 이루어질 수 없습니다.' :
-            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.':
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '아이디는 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
+            result.code === 'DI' ?  '이미 사용중인 아이디입니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' :
             result.code === 'SU' ? '사용 가능한 아이디입니다.' : '';
-        const idError = !(result && result.code === 'SU')
+        const idError = !(result && result.code === 'SU');
         const idCheck = !idError;
 
         setIdMessage(idMessage);
         setIdError(idError);
         setIdCheck(idCheck);
-      
+
     };
+
 
     const emailAuthResponse = (result: ResponseDto | null) => {
         const emailMessage = 
@@ -201,6 +202,10 @@ function SignUp({ onLinkClickHandler }: Props) {
         setEmailMessage(emailMessage);
         setEmailCheck(emailCheck);
         setEmailError(emailError);
+    };
+
+    const emailAuthCheckResponse = (result: ResponseDto | null) => {
+
     };
 
     //                    event handler                    //
@@ -306,13 +311,13 @@ function SignUp({ onLinkClickHandler }: Props) {
 
     const onAuthNumberButtonClickHandler = () => {
         if(!authNumberButtonStatus) return;
+        if(!authNumber) return ; 
 
-        const authNumberCheck = authNumber === '1234';
-        setAuthNumberCheck(authNumberCheck);
-        setAuthNumberError(!authNumberCheck);
-
-        const authNumberMessage = authNumberCheck ? '인증번호가 확인되었습니다.' : '인증번호가 일치하지 않습니다.';
-        setAuthNumberMessage(authNumberMessage);
+        const requestBody: EmailAuthCheckRequestDto = {
+            userEmail: email,
+            authNumber: authNumber
+        };
+        EmailAuthCheckRequest(requestBody).then(emailAuthCheckResponse);
     };
 
     const onSignUpButtonClickHandler = () => {
