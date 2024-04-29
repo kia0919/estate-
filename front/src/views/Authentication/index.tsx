@@ -4,9 +4,13 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request/Index";
-import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest, SignUpRequest } from "src/apis/auth";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignInRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request/Index";
+import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest, SignInRequest, SignUpRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
+import { SignInResponseDto } from "src/apis/auth/dto/response";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
+import { LOCAL_ABSOLUTE_PATH } from "src/constant/Index";
 
 //                    type                    //
 // 페이지 타입을 로그인, 회원가입을 두 페이지를 나타냄.
@@ -60,12 +64,46 @@ interface Props {
 function SignIn({ onLinkClickHandler }: Props) {
 
     //                    state                    //
+    // 패키지 cookie 사용
+    const [cookies, setCookie]= useCookies();
+
     // 상태함수(id), 상태변경함수(setId)를 useState사용하여 타입과, 초기값을 설정(useState로 상태 설정)
     const [id, setId] = useState<string>('');
+
     // 상태함수(password), 상태변경함수(setPassword)를 useState사용하여 타입과, 초기값을 설정
     const [password, setPassword] = useState<string>('');
 
     const [message, setMessage] = useState<string>('');
+
+
+    //                    function                    //
+    const navigator = useNavigate();
+
+    const signInResponse = (result: SignInResponseDto | ResponseDto | null) => {
+        
+        const message = 
+            !result ? '서버에 문제가 있습니다.':
+            result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.':
+            result.code === 'SF' ? '로그인 정보가 일치하지 않습니다.':
+            result.code === 'TF' ? '서버에 문제가 있습니다.':
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        setMessage(message);
+
+        const isSuccess = result && result.code === 'SU';
+        if (!isSuccess) return;
+
+        // ResponseDto에는 token,expires가 없으므로 에러가 뜸 / SignInResponseDto 강제로 가져와서 해결
+        const { acccessToken, expires } = result as SignInResponseDto;
+        // Date.now(milliseconds단위): 현재시간
+        // expire: 만료시간 / 현재 단위가  milliseconds이므로 second로 단위변환하기 위해 현재 만료시간에 + 1000을 한다.
+        const expiration = new Date(Date.now() + (expires + 1000))
+        // accessTokem이란 이름으로 값(acccessToken)에 넣어주겠다
+        setCookie('accessToken', acccessToken, {path: '/', expires:expiration});
+        
+        // 절대경로 지정, 페이지 이동
+        navigator(LOCAL_ABSOLUTE_PATH);
+
+    };
 
     //                    event handler                    //
     // onIdChangeHandler함수: Id입력란을 변경 처리하고 입력란에 입력된 값을 id상태에 설정
@@ -84,19 +122,18 @@ function SignIn({ onLinkClickHandler }: Props) {
     };
 
     const onSignInButtonClickHandler = () => {
-        const ID = 'service123';
-        const PASSWORD = 'qwer1234';
-
-        const isSuccess = id === ID && password === PASSWORD;
-
-        if (isSuccess) {
-            setId('');
-            setPassword('');
-            alert('로그인 성공!');
+        // id나 password 입력란이 비어있으면
+        if (!id || !password) {
+            setMessage('아이디와 비밀번호를 모두 입력하세요.');
+            return;        
         }
-        else {
-            setMessage('로그인 정보가 일치하지 않습니다.');
+
+        const requestBody: SignInRequestDto = {
+            userId: id,
+            userPassword: password
         }
+        // SignInRequest요청을 보낸다음에 then작업을 실행하여 signInResponse응답을 반환하게 한다.
+        SignInRequest(requestBody).then(signInResponse);
         
     };
 
