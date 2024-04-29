@@ -19,8 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
-//# 카카오, 네이버 소셜 로그인 기능 
-
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserSerivceImplementation extends DefaultOAuth2UserService {

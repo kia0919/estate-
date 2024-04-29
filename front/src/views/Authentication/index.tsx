@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import "./style.css";
 
 import SignInBackground from 'src/assets/image/sign-in-background.png';
@@ -9,8 +9,28 @@ import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest, SignInRequest,
 import ResponseDto from "src/apis/response.dto";
 import { SignInResponseDto } from "src/apis/auth/dto/response";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { LOCAL_ABSOLUTE_PATH } from "src/constant/Index";
+
+export function Sns () {
+
+    const { accessToken, expires } = useParams();
+    const [cookie, setCookie] = useCookies();
+
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        if (!accessToken || !expires) return;
+        const expiration = new Date(Date.now() + (Number(expires) + 1000))
+        // accessTokem이란 이름으로 값(acccessToken)에 넣어주겠다
+        setCookie('accessToken', accessToken, {path: '/', expires:expiration});
+        
+        // 절대경로 지정, 페이지 이동
+        navigator(LOCAL_ABSOLUTE_PATH);
+    }, [])
+
+    return <></>;
+}
 
 //                    type                    //
 // 페이지 타입을 로그인, 회원가입을 두 페이지를 나타냄.
@@ -31,7 +51,7 @@ function SnsContainer({ title }: SnsContainerProps) {
     // onSnsButtonClickHandler함수 정의에서 type매개변수를 받고, kakao, naver 두가지 문자열 값 중 하나를 가져야하고,
     const onSnsButtonClickHandler = (type: 'kakao' | 'naver') => {
         // 클릭시 선택한 버튼 타입이 무엇인지 alert로 알려준다.
-        alert(type);
+        window.location.href = 'http://localhost:4000/api/v1/auth/oauth2/' + type;
     };
 
     //                    render                    //
@@ -93,12 +113,12 @@ function SignIn({ onLinkClickHandler }: Props) {
         if (!isSuccess) return;
 
         // ResponseDto에는 token,expires가 없으므로 에러가 뜸 / SignInResponseDto 강제로 가져와서 해결
-        const { acccessToken, expires } = result as SignInResponseDto;
+        const { accessToken, expires } = result as SignInResponseDto;
         // Date.now(milliseconds단위): 현재시간
         // expire: 만료시간 / 현재 단위가  milliseconds이므로 second로 단위변환하기 위해 현재 만료시간에 + 1000을 한다.
-        const expiration = new Date(Date.now() + (expires + 1000))
+        const expiration = new Date(Date.now() + (expires * 1000))
         // accessTokem이란 이름으로 값(acccessToken)에 넣어주겠다
-        setCookie('accessToken', acccessToken, {path: '/', expires:expiration});
+        setCookie('accessToken', accessToken, {path: '/', expires:expiration});
         
         // 절대경로 지정, 페이지 이동
         navigator(LOCAL_ABSOLUTE_PATH);

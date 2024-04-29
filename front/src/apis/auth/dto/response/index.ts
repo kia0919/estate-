@@ -6,7 +6,7 @@ import ResponseDto from "src/apis/response.dto";
 //! SignInResponseDto(로그인응답Dto)형태로 인테페이스 정의하고, ResponseDto를 상속 받는다
 export interface SignInResponseDto extends ResponseDto {
     //! accessToken, expires 속성 정의
-    acccessToken: string;
+    accessToken: string;
     //? 만료기간
     expires: number;
 }

@@ -14,7 +14,7 @@ public class CustomOAuth2User implements OAuth2User {
     private Map<String, Object> attributes;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomOAuth2User(String id, Map<String, Object> attributes ) {
+    public CustomOAuth2User(String id, Map<String, Object> attributes) {
         this.id = id;
         this.attributes = attributes;
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
@@ -22,7 +22,6 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-
         return this.attributes;
     }
 

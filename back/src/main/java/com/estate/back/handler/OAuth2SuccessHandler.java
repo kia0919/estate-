@@ -8,7 +8,6 @@ import com.estate.back.common.object.CustomOAuth2User;
 import com.estate.back.provider.JwtProvider;
 
 import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,18 +20,19 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtProvider jwtProvider;
 
     @Override
-    public void onAuthenticationSuccess (
-        HttpServletRequest request,
+    public void onAuthenticationSuccess(
+        HttpServletRequest request, 
         HttpServletResponse response,
-        
-        Authentication authentication 
-    )   throws IOException, ServletException {
+        Authentication authentication
+    ) throws IOException, ServletException {
 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String userId = oAuth2User.getName();
 
         String token = jwtProvider.create(userId);
-        response.sendRedirect("http://localhost:3000/sns/"+token+"/36000");
+
+        response.sendRedirect("http://localhost:3000/sns/" + token + "/36000");
+
     }
-    
+
 }
