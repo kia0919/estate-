@@ -449,7 +449,7 @@ function SignUp({ onLinkClickHandler }: Props) {
 export default function Authentication() {
 
     //                    state                    //: 초기화면
-    const [page, setPage] = useState<AuthPage>('sign-up');
+    const [page, setPage] = useState<AuthPage>('sign-in');
 
     //                    event handler                    //
     const onLinkClickHandler = () => {
