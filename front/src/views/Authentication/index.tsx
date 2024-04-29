@@ -309,14 +309,20 @@ function SignUp({ onLinkClickHandler }: Props) {
         EmailAuthRequest(requestBody).then(emailAuthResponse);
     };
 
+    //# 인증번호버튼클릭 핸들러 함수 정의
     const onAuthNumberButtonClickHandler = () => {
+        //! 인증번호버튼상태가 비활성화일 때 반환
         if(!authNumberButtonStatus) return;
+        //! 인증번호 입력란이 비어있을 때 반환?
         if(!authNumber) return ; 
 
+        //# EmailAuthCheckRequestDto
         const requestBody: EmailAuthCheckRequestDto = {
             userEmail: email,
             authNumber: authNumber
         };
+        //! EmailAuthCheckRequest: 이메일 인증 함수 호출하여 그 결과를 emailAuthCheckResponse에 전달
+        //! 매개변수는(requestBody)
         EmailAuthCheckRequest(requestBody).then(emailAuthCheckResponse);
     };
 
