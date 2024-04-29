@@ -4,8 +4,8 @@ import "./style.css";
 import SignInBackground from 'src/assets/image/sign-in-background.png';
 import SignUpBackground from 'src/assets/image/sign-up-background.png';
 import InputBox from "src/components/Inputbox";
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto } from "src/apis/auth/dto/request/Index";
-import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest } from "src/apis/auth";
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto, SignUpRequestDto } from "src/apis/auth/dto/request/Index";
+import { EmailAuthCheckRequest, EmailAuthRequest, IdCheckRequest, SignUpRequest } from "src/apis/auth";
 import ResponseDto from "src/apis/response.dto";
 
 //                    type                    //
@@ -189,24 +189,62 @@ function SignUp({ onLinkClickHandler }: Props) {
 
 
     const emailAuthResponse = (result: ResponseDto | null) => {
+
         const emailMessage = 
-            !result ? '서버에 문제가 있습니다.':
-            result.code === 'VF' ? '이메일 형식이 아닙니다.':
+            !result ? '서버에 문제가 있습니다.' : 
+            result.code === 'VF' ? '이메일 형식이 아닙니다.' :
             result.code === 'DE' ? '중복된 이메일입니다.' :
-            result.code === 'MF' ? '인증번호 전송에 실패했습니다.':
-            result.code === 'DBE' ? '서버에 문제가 있습니다.':
+            result.code === 'MF' ? '인증번호 전송에 실패했습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : 
             result.code === 'SU' ? '인증번호가 전송되었습니다.' : '';
-        const emailCheck = result !== null && (result.code === 'SU');
-        const emailError = !emailCheck; 
-        
+        const emailCheck = result !== null && result.code === 'SU';
+        const emailError = !emailCheck;
+
         setEmailMessage(emailMessage);
         setEmailCheck(emailCheck);
         setEmailError(emailError);
+
     };
 
     const emailAuthCheckResponse = (result: ResponseDto | null) => {
 
+        const authNumberMessage =
+            //! 결과가 존재하지 않는다면 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '인증번호를 입력해주세요.':
+            result.code === 'AF' ? '인증번호가 일치하지 않습니다.':
+            result.code === 'DBE' ? '서버에 문제가 있습니다.':
+            result.code === 'SU' ? '인증번호가 확인되었습니다.' : '';
+        const authNumberCheck = result !== null && result.code === 'SU';
+        const authNumberError = !authNumberCheck;
+        
+        setAuthNumberMessage(authNumberMessage);
+        setAuthNumberCheck(authNumberCheck);
+        setAuthNumberError(authNumberError);
+
     };
+
+    const signUpResponse = (result: ResponseDto | null) => {
+
+        const message = 
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'VF' ? '입력 형식이 맞지 않습니다.' : 
+            result.code === 'DI' ? '이미 사용중인 아이디입니다.' :
+            result.code === 'DE' ? '중복된 이메일입니다.' :
+            result.code === 'AF' ? '인증번호가 일치하지 않습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : ''
+
+        const isSuccess = result && result.code === 'SU';
+        if (!isSuccess) {
+            alert(message);
+            return;
+        }
+        onLinkClickHandler();
+        
+    };
+
+
+
 
     //                    event handler                    //
     // Id입력란이 변경될때 onIdChangeHandler함수 호출
@@ -309,7 +347,7 @@ function SignUp({ onLinkClickHandler }: Props) {
         EmailAuthRequest(requestBody).then(emailAuthResponse);
     };
 
-    //# 인증번호버튼클릭 핸들러 함수 정의
+    //# 인증번호버튼 클릭 핸들러 함수 정의
     const onAuthNumberButtonClickHandler = () => {
         //! 인증번호버튼상태가 비활성화일 때 반환
         if(!authNumberButtonStatus) return;
@@ -326,9 +364,21 @@ function SignUp({ onLinkClickHandler }: Props) {
         EmailAuthCheckRequest(requestBody).then(emailAuthCheckResponse);
     };
 
+    //# 회원가입버튼 클릭 핸들러 함수 정의
     const onSignUpButtonClickHandler = () => {
         if(!isSignUpActive) return;
-        alert('회원가입');
+        if(!id || !password || !passwordCheck || !email || !authNumber) {
+            alert('모든 내용을 입력해 주세요.')
+            return;
+        }
+
+        const requestBody: SignUpRequestDto = {
+            userId: id,
+            userPassword: password,
+            userEmail: email,
+            authNumber: authNumber
+        }
+        SignUpRequest(requestBody).then(signUpResponse);
     };
 
     //                    render                    //
