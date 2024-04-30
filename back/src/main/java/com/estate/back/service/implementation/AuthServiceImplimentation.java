@@ -84,8 +84,8 @@ public class AuthServiceImplimentation implements AuthService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
-        return SignInResponseDto.success(null);
+        // 토큰 응답 성공 accessToken으로 반환
+        return SignInResponseDto.success(accessToken);
 
     }
 

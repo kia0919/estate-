@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
-    // 의존서 주입
+    // 의존성 주입
     private final UserRepository userRepository;
 
     @Override
@@ -31,8 +31,8 @@ public class UserServiceImplementation implements UserService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
-        return GetSignInUserResponseDto.success(null);
+        // Get메서드에서
+        return GetSignInUserResponseDto.success(userEntity);
 
     }
     

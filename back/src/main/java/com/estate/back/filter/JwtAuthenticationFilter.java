@@ -93,7 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean hasAuthorization = StringUtils.hasText(authorization);
         if (!hasAuthorization) return null;
         // bearer 인증 여부 확인
-        boolean isBearer = authorization.startsWith("bearer");
+        boolean isBearer = authorization.startsWith("Bearer ");
         if (!isBearer) return null;
 
         // Authorization 필드값에서 토큰 추출
