@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AUTH_ABSOLUTE_PATH, LOCAL_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH, RATIO_ABSOLUTE_PATH } from 'src/constant/Index';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
+import { getSignInUserRequest } from 'src/apis/user';
+import { GetSignInUserResponseDto } from 'src/apis/user/dto/response';
+import ResponseDto from 'src/apis/response.dto';
+import useUserStore from 'src/stores/user.store';
 
 type Path = '지역 평균' | '비율 계산' | 'Q&A 게시판' | '';
 
@@ -16,6 +20,7 @@ interface Props {
 function TopBar({ path }: Props) {
 
   //                    state                    //
+  const { loginUserRole } = useUserStore();
   const [cookie, setCookie, removeCookie] = useCookies();
 
   //                    function                    //
@@ -23,7 +28,7 @@ function TopBar({ path }: Props) {
 
 
   //                    event handler                    //
-  const onLogutClickHandler = () => {
+  const onLogoutClickHandler = () => {
     // accessToken 토큰이 제거가 됨, 모든 경로에서 해당 쿠키를 제거
     removeCookie('accessToken', { path: '/' });
     //제거가 되면은 해당 경로로 이동
@@ -34,15 +39,15 @@ function TopBar({ path }: Props) {
   return (
     <>
     <div className="logo-container">임대주택 가격 서비스</div>
-        <div className="top-bar-container">
-            <div className="top-bar-title">{path}</div>
-            <div className="top-bar-right">
-              <div className="top-bar-role">관리자</div>
-              <div className="second-button" onClick={onLogutClickHandler}>로그아웃</div>
-            </div>
+    <div className="top-bar-container">
+        <div className="top-bar-title">{ path }</div>
+        <div className="top-bar-right">
+            { loginUserRole === 'ROLE_ADMIN' && <div className="top-bar-role">관리자</div> }
+            <div className="second-button" onClick={onLogoutClickHandler}>로그아웃</div>
         </div>
+    </div>
     </>
-  );
+);
 }
 
 //                    component                    //
@@ -88,7 +93,28 @@ export default function ServiceContainer() {
   //                    state                    //
   // path에대한 값을 가져올 수 있음
   const { pathname } = useLocation();
-  const [ path, setPath] = useState<Path>('');
+  const { setLoginUserId, setLoginUserRole } = useUserStore();
+  const [cookies] = useCookies();
+  const [path, setPath] = useState<Path>('');
+
+  //                    function                    //
+  const getSignInUserResponse = (result: GetSignInUserResponseDto | ResponseDto | null) => {
+
+    const message = 
+        !result ? '서버에 문제가 있습니다.' :
+        result.code === 'AF' ? '인증에 실패했습니다.' :
+        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    if (!result || result.code !== 'SU') {
+        alert(message);
+        return;
+    }
+
+    const { userId, userRole } = result as GetSignInUserResponseDto;
+    setLoginUserId(userId);
+    setLoginUserRole(userRole);
+
+};
 
   //                    effect                    //
   // 컴포넌트가 렌더링될 때 특정 작업을 수행하도록 설정할 수 있는 훅
@@ -103,6 +129,18 @@ export default function ServiceContainer() {
     setPath(path);
 
   }, [pathname]);
+
+  useEffect(() => {
+
+    if (!cookies.accessToken) {
+      return;
+    }
+
+    getSignInUserRequest(cookies.accessToken).then(getSignInUserResponse);
+
+
+
+  }, [cookies.accessToken]);
 
   //                    render                    //
   return (

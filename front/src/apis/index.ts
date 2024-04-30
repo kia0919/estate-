@@ -22,3 +22,6 @@ export const requestErrorHandler = (error: any) => {
     //! rsponseBody를 ResponseDto타입으로 형변환하여 반환
     return responseBody as ResponseDto;
 };
+
+// function: Authorization Bearer 헤더 
+export const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } });

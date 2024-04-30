@@ -626,7 +626,7 @@ Content-Type: application/json;charset=UTF-8
 
 **응답 : 실패 (토큰 생성 실패)**
 ```bash
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 500 Internal Server Error  
 Content-Type: application/json;charset=UTF-8
 {
   "code": "TF",
