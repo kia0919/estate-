@@ -23,7 +23,7 @@ public class CustomOAuth2User implements OAuth2User {
     // 이 컬렉션은 GrantedAuthority을 구현한 객체들을 저장
     private Collection<? extends GrantedAuthority> authorities;
 
-    //# 생성자
+    //# 생성자CustomOAuth2User 사용
     // 사용자의 id속성을 받아옴
     public CustomOAuth2User(String id, Map<String, Object> attributes) {
         this.id = id;
