@@ -8,6 +8,11 @@ import { GetSignInUserResponseDto } from 'src/apis/user/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import useUserStore from 'src/stores/user.store';
 
+//# 사용자 인증 및 메인화면 기능 및 구현관리?
+// 경로관리: 지역평균서비스에 대한 경로
+// 경로관리: 비율계산서비스에 대한 경로
+// 경로관리: Q&A게시판서비스에 대한 경로
+// 경로관리: '' 경로가 없음
 type Path = '지역 평균' | '비율 계산' | 'Q&A 게시판' | '';
 
 //                    interface                    //
@@ -17,9 +22,12 @@ interface Props {
 }
 
 //                    component                    //
+// 상단바를 표시하는 컴포넌트, Props의 속성 path를 가져옴
 function TopBar({ path }: Props) {
 
   //                    state                    //
+  // loginUserRole: 사용자 정보상태
+  // loginUserRole객체에 useUserStore을 할당하여 반환
   const { loginUserRole } = useUserStore();
   const [cookie, setCookie, removeCookie] = useCookies();
 
