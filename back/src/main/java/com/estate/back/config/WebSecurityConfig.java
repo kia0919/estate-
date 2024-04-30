@@ -49,9 +49,11 @@ public class WebSecurityConfig {
                 .configurationSource(corsConfigurationSource())
             )
             // HTTP요청에 대한 권한을 부여하는 방법 정의
-            //
+            // authorizeHttpRequests: HTTP요청에 대한 권한을 부여하는 메서드
             .authorizeHttpRequests(request -> request
+                // 해당 경로에 대한 요청은 모두 허용한다. / 인증되지 않은 사용자여도 해당 경로로 접근하는 요청은 모두 허용된다
                 .requestMatchers("/", "/api/v1/auth/**", "/oauth2/callback/*").permitAll()
+                // .anyRequest().authenticated(): 위에서 정한 경로외의 요청은 모두 인증이 필요함.
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
