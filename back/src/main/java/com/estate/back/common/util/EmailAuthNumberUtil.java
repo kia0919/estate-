@@ -1,6 +1,8 @@
 package com.estate.back.common.util;
 import java.util.Random;
 
+//# 이메일 인증번호를 생성하는 유틸리티 클래스
+
 // 이메일 인증 번호
 public class EmailAuthNumberUtil {
 
@@ -24,7 +26,7 @@ public class EmailAuthNumberUtil {
         }
         return new String(authChar);
     }
-    // 아스키코드 65~90, 48~57
+    // 아스키코드 65~90(A~Z), 48~57(0~9)
     //# A~Z, 0~9의 4자리 임의의 문자열
     public static String createCodeNumber() {
         char[] authChar = new char[4];
