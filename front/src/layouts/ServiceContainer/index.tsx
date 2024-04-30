@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import { Outlet, useLocation, useNavigate } from 'react-router';
-import { LOCAL_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH, RATIO_ABSOLUTE_PATH } from 'src/constant/Index';
+import { AUTH_ABSOLUTE_PATH, LOCAL_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH, RATIO_ABSOLUTE_PATH } from 'src/constant/Index';
+import { useCookies } from 'react-cookie';
 
 type Path = '지역 평균' | '비율 계산' | 'Q&A 게시판' | '';
 
@@ -13,13 +14,29 @@ interface Props {
 
 //                    component                    //
 function TopBar({ path }: Props) {
+
+  //                    state                    //
+  const [cookie, setCookie, removeCookie] = useCookies();
+
+  //                    function                    //
+  const navigator = useNavigate();
+
+
+  //                    event handler                    //
+  const onLogutClickHandler = () => {
+    // accessToken 토큰이 제거가 됨, 모든 경로에서 해당 쿠키를 제거
+    removeCookie('accessToken', { path: '/' });
+    //제거가 되면은 해당 경로로 이동
+    navigator(AUTH_ABSOLUTE_PATH)
+  };
+
   //                    render                    //
   return (
     <>
     <div className="logo-container">임대주택 가격 서비스</div>
         <div className="top-bar-container">
             <div className="top-bar-title">{path}</div>
-            <div className="second-button">로그아웃</div>
+            <div className="second-button" onClick={onLogutClickHandler}>로그아웃</div>
         </div>
     </>
   );
