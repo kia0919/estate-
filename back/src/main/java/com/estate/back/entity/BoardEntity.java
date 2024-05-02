@@ -1,5 +1,11 @@
 package com.estate.back.entity;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+
+import com.estate.back.dto.request.board.PostBoardRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,21 +17,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // estate 데이터베이스의 board 테이블과 매핑되는 Entity 클래스
-@Entity(name = "board")
-@Table(name = "board")
+@Entity(name="board")
+@Table(name="board")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String receptionNumber;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer receptionNumber;
     private Boolean status;
     private String title;
     private String contents;
     private String writerId;
     private String writeDatetime;
     private Integer viewCount;
-    private String Comment;
+    private String comment;
+
+    public BoardEntity(PostBoardRequestDto dto, String userId) {
+        Date now = Date.from(Instant.now());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+
+        this.status = false;
+        this.title = dto.getTitle();
+        this.contents = dto.getContents();
+        this.writerId = userId;
+        this.writeDatetime = writeDatetime;
+        this.viewCount = 0;
+    }
 }

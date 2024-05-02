@@ -32,6 +32,8 @@ function TopBar({ path }: Props) {
   const [cookies, setCookie, removeCookie] = useCookies();
 
   //                    function                    //
+  // navigator 함수 생성
+  // useNavigate: 리액트에서 제공되는 훅(페이지 이동할 때 사용)
   const navigator = useNavigate();
 
 
@@ -62,7 +64,7 @@ function TopBar({ path }: Props) {
 //                    component                    //
 // Props의 pathName속성을 가져옴
 function SideNavigation({ path }: Props) {
-
+  // 각 제목에 맞는 클래스 생성, 
   const localClass = `side-navigation-item${path === '지역 평균' ? ' active' : ''}`;
   const ratioClass = `side-navigation-item${path === '비율 계산' ? ' active' : ''}`;
   const qnaClass = `side-navigation-item${path === 'Q&A 게시판' ? ' active' : ''}`;
