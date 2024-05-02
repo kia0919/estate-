@@ -1,10 +1,13 @@
 package com.estate.back.service.implementation;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
 import com.estate.back.dto.response.ResponseDto;
+import com.estate.back.dto.response.board.GetBoardListResponseDto;
 import com.estate.back.entity.BoardEntity;
 import com.estate.back.repository.BoardRepository;
 import com.estate.back.repository.UserRepository;
@@ -41,6 +44,23 @@ public class BoardServiceImplimentation implements BoardService {
         
         // Try블럭이 정상 실행 시 ResponseDto에 있는 success를 반환
         return ResponseDto.success();
+
+    }
+
+    @Override
+    public ResponseEntity<? super GetBoardListResponseDto> getBoardList() {
+        
+        try {
+
+            List<BoardEntity> boardEntities = boardRepository.findByOrderByReceptionNumberDesc();
+
+            return GetBoardListResponseDto.success(boardEntities);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
 
     }
     
