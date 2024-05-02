@@ -514,44 +514,15 @@ Content-Type: application/json;charset=UTF-8
 
 사용자 정보와 관련된 REST API 모듈
   
-- url : /api/v1/user
+- url : /api/v1/user  
 
 ***
 
-#### - 로그인 유저 정보 반환
+#### - 로그인 유저 정보 반환  
   
 ##### 설명
 
-클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 요청을 받으면 해당 토큰의 작성자(subject)에 해당하는 사용자 정보를 반환. 성공시에는 사요장의 아이디와 권한을 반환합니다. 인증 실패 및 데이터베이스 에러가 발생할 수 있습니다.
-
-<!--
-!client가 header에 bearer 토큰을 포함하여 요청 
-?0. 해당 요청의 메 서드와 URL을 보고 인증 인가가 필요한 요청인지 확인
-?1. header의 Authorization 필드에 값이 있는지 확인
-?2. 해당 요청의 인증 방식이 Bearer 인증 방식인지 확인
-?3. Authorization 필드에 값에서 토큰 추출
-?4. 토큰의 유효성 판단
-?5. 토큰에서 userId 추출
-?6. userId로 데이터베이스에서 조회
-?7. 조회 결과로부터 사용자의 권한을 추출
-?8. context에 request의 정보와 접근주체의 정보를 추가
-?9. 접근주체가 해당 요청을 사용할 권한이 있는지 확인
-?- 만약 인증 및 인가 작업에 실패하면 "AF"응답 처리
-
-!controller
-?10. 컨트롤러의 메서드에서 인증 접근 주체의 정보를 가져옴
-
-(userId)
-
-!service
-?11. 데이터베이스의 user테이블에서 userId에 해당하는 레코드를 조회
-?11.1 데이터베이스 오류 발생 시 'DBE'응답 처리
-?12. 안정성을 위해 존재하는 user인지 확인
-?12.1 존재하지 않는다면 'NU'응답 처리
-
-!rsponse
-?13. 'SU'응답 처리(SUCCESS)
--->
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 요청을 받으면 해당 토큰의 작성자(subject)에 해당하는 사용자 정보를 반환합니다. 성공시에는 사용자의 아이디와 권한을 반환합니다. 인증 실패 및 데이터베이스 에러가 발생할 수 있습니다.
 
 - method : **GET**  
 - URL : **/**  
@@ -562,15 +533,13 @@ Content-Type: application/json;charset=UTF-8
 
 | name | description | required |
 |---|:---:|:---:|
-<!-- Bearer 토큰: 유효성여부에 따라 처리가 됨 | 필수 |    -->
-| Authorization | 인증에 사용되는 Bearer 토큰 | 0 |
-
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
 
 ###### Example
 
 ```bash
 curl -v -X GET "http://localhost:4000/api/v1/user/" \
- -H "Authorization: Bearer {JWT}" 
+ -H "Authorization: Bearer {JWT}"
 ```
 
 ##### Response
@@ -587,7 +556,7 @@ curl -v -X GET "http://localhost:4000/api/v1/user/" \
 |---|:---:|:---:|:---:|
 | code | String | 사용자의 아이디 | O |
 | message | String | 사용자의 비밀번호 | O |
-| userId  | String | 사용자의 아이디 | O |
+| userId | String | 사용자의 아이디 | O |
 | userRole | String | 사용자의 권한 | O |
 
 ###### Example
@@ -599,7 +568,7 @@ Content-Type: application/json;charset=UTF-8
 {
   "code": "SU",
   "message": "Success.",
-  "accessToken": "${userId}",
+  "userId": "${userId}",
   "userRole": "${userRole}"
 }
 ```
@@ -624,13 +593,98 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-**응답 : 실패 (토큰 생성 실패)**
+**응답 : 실패 (데이터베이스 오류)**
 ```bash
-HTTP/1.1 500 Internal Server Error  
+HTTP/1.1 500 Internal Server Error
 Content-Type: application/json;charset=UTF-8
 {
-  "code": "TF",
-  "message": "Token creation Failed."
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+***
+
+<h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>Board 모듈</h2>
+
+Q&A 게시물과 관련된 REST API 모듈
+  
+- url : /api/v1/board  
+
+***
+
+#### - Q&A 게시물 작성  
+  
+##### 설명
+
+클라이언트로부터 Request Header의 Authorization 필드로 Bearer 토큰을 포함하여 제목, 내용을 입력받고 작성에 성공하면 성공처리를 합니다. 만약 작성에 실패하면 실패처리 됩니다. 인가 실패, 데이터베이스 에러, 데이터 유효성 검사 실패가 발생할 수 있습니다.
+
+- method : **POST**  
+- URL : **/**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | 인증에 사용될 Bearer 토큰 | O |
+
+###### Example
+
+```bash
+curl -v -X GET "http://localhost:4000/api/v1/user/" \
+ -H "Authorization: Bearer {JWT}"
+```
+
+##### Response
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Content-Type | 반환하는 Response Body의 Content Type (application/json) | O |
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 사용자의 아이디 | O |
+| message | String | 사용자의 비밀번호 | O |
+| userId | String | 사용자의 아이디 | O |
+| userRole | String | 사용자의 권한 | O |
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "SU",
+  "message": "Success.",
+  "userId": "${userId}",
+  "userRole": "${userRole}"
+}
+```
+
+**응답 : 실패 (인가 실패)**
+```bash
+HTTP/1.1 403 Forbidden
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authorization Failed."
+}
+```
+
+**응답 : 실패 (인증 실패)**
+```bash
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json;charset=UTF-8
+{
+  "code": "AF",
+  "message": "Authentication Failed."
 }
 ```
 

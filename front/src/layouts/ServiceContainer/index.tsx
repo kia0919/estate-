@@ -27,9 +27,9 @@ function TopBar({ path }: Props) {
 
   //                    state                    //
   // loginUserRole: 사용자 정보상태
-  // loginUserRole객체에 useUserStore을 할당하여 반환
   const { loginUserRole } = useUserStore();
-  const [cookie, setCookie, removeCookie] = useCookies();
+  // cookise: 상태함수, setCookie: 상태변경함수, removeCookie: 쿠키제거함수
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   //                    function                    //
   const navigator = useNavigate();
@@ -37,11 +37,12 @@ function TopBar({ path }: Props) {
 
   //                    event handler                    //
   const onLogoutClickHandler = () => {
-    // accessToken 토큰이 제거가 됨, 모든 경로에서 해당 쿠키를 제거
+    // 이름이 'accessToken'인 토큰을 제거, 제거할 경로를 '/'로 해서 모든 경로에서 해당 쿠키를 제거
     removeCookie('accessToken', { path: '/' });
-    //제거가 되면은 해당 경로로 이동
-    navigator(AUTH_ABSOLUTE_PATH)
-  };
+    // 토큰이 제거가 되면은 해당 경로로 이동
+    // AUTH_ABSOLUTE_PATH: 로그인 화면
+    navigator(AUTH_ABSOLUTE_PATH);
+    };
 
   //                    render                    //
   return (
@@ -60,7 +61,7 @@ function TopBar({ path }: Props) {
 
 //                    component                    //
 // Props의 pathName속성을 가져옴
-function SideNavigation ({ path }: Props ) {
+function SideNavigation({ path }: Props) {
 
   const localClass = `side-navigation-item${path === '지역 평균' ? ' active' : ''}`;
   const ratioClass = `side-navigation-item${path === '비율 계산' ? ' active' : ''}`;
@@ -72,27 +73,27 @@ function SideNavigation ({ path }: Props ) {
   //                    event handler                    //
   // 버튼 클릭 시 해당 페이지로 이동
   const onLocalClickHandler = () => navigator(LOCAL_ABSOLUTE_PATH);
-  
+  // 버튼 클릭 시 해당 페이지로 이동
   const onRatioClickHandler = () => navigator(RATIO_ABSOLUTE_PATH);
-
+  // 버튼 클릭 시 해당 페이지로 이동
   const onQnaClickHandler = () => navigator(QNA_LIST_ABSOLUTE_PATH);
 
   //                    render                    //
   return (
-  <div className="side-navigation-container">
-  <div className={localClass} onClick={onLocalClickHandler}>
-      <div className="side-navigation-icon chart"></div>
-      <div className="side-navigation-title">지역 평균</div>
-  </div>
-  <div className={ratioClass} onClick={onRatioClickHandler}>
-      <div className="side-navigation-icon pie"></div>
-      <div className="side-navigation-title">비율 계산</div>
-  </div>
-  <div className={qnaClass} onClick={onQnaClickHandler}>
-      <div className="side-navigation-icon edit"></div>
-      <div className="side-navigation-title">Q&A 게시판</div>
-  </div>
-</div>
+    <div className="side-navigation-container">
+        <div className={localClass} onClick={onLocalClickHandler}>
+            <div className="side-navigation-icon chart"></div>
+            <div className="side-navigation-title">지역 평균</div>
+        </div>
+        <div className={ratioClass} onClick={onRatioClickHandler}>
+            <div className="side-navigation-icon pie"></div>
+            <div className="side-navigation-title">비율 계산</div>
+        </div>
+        <div className={qnaClass} onClick={onQnaClickHandler}>
+            <div className="side-navigation-icon edit"></div>
+            <div className="side-navigation-title">Q&A 게시판</div>
+        </div>
+    </div>
 );
 }
 //                    component                    //
@@ -101,28 +102,28 @@ export default function ServiceContainer() {
   //                    state                    //
   // path에대한 값을 가져올 수 있음
   const { pathname } = useLocation();
-  const { setLoginUserId, setLoginUserRole } = useUserStore();
-  const [cookies] = useCookies();
-  const [path, setPath] = useState<Path>('');
+    const { setLoginUserId, setLoginUserRole } = useUserStore();
+    const [cookies] = useCookies();
+    const [path, setPath] = useState<Path>('');
 
   //                    function                    //
   const getSignInUserResponse = (result: GetSignInUserResponseDto | ResponseDto | null) => {
 
     const message = 
-        !result ? '서버에 문제가 있습니다.' :
-        result.code === 'AF' ? '인증에 실패했습니다.' :
-        result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            !result ? '서버에 문제가 있습니다.' :
+            result.code === 'AF' ? '인증에 실패했습니다.' :
+            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-    if (!result || result.code !== 'SU') {
-        alert(message);
-        return;
-    }
+        if (!result || result.code !== 'SU') {
+            alert(message);
+            return;
+        }
 
-    const { userId, userRole } = result as GetSignInUserResponseDto;
-    setLoginUserId(userId);
-    setLoginUserRole(userRole);
+        const { userId, userRole } = result as GetSignInUserResponseDto;
+        setLoginUserId(userId);
+        setLoginUserRole(userRole);
 
-};
+    };
 
   //                    effect                    //
   // 컴포넌트가 렌더링될 때 특정 작업을 수행하도록 설정할 수 있는 훅
