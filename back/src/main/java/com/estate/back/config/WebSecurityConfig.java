@@ -59,7 +59,9 @@ public class WebSecurityConfig {
             // authorizeHttpRequests: HTTP요청에 대한 권한을 부여하는 메서드
             .authorizeHttpRequests(request -> request
                 // 해당 경로에 대한 요청은 모두 허용한다. / 인증되지 않은 사용자여도 해당 경로로 접근하는 요청은 모두 허용된다
-                .requestMatchers("/", "/api/v1/auth/**", "/oauth2/callback/*").permitAll()  
+                .requestMatchers("/", "/api/v1/auth/**", "/oauth2/callback/*").permitAll()
+                // "/api/v1/board/" 여기에 해당하는 것만, hasRole(USER): USER권한
+                .requestMatchers("/api/v1/board/").hasRole("USER")
                 // .anyRequest().authenticated(): 위에서 정한 경로외의 요청은 모두 인증이 필요함.
                 .anyRequest().authenticated()
             )
