@@ -109,15 +109,19 @@ export default function ServiceContainer() {
     const [path, setPath] = useState<Path>('');
 
   //                    function                    //
+  const navigator = useNavigate();
+
   const getSignInUserResponse = (result: GetSignInUserResponseDto | ResponseDto | null) => {
 
     const message = 
             !result ? '서버에 문제가 있습니다.' :
             result.code === 'AF' ? '인증에 실패했습니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            
 
         if (!result || result.code !== 'SU') {
             alert(message);
+            navigator(AUTH_ABSOLUTE_PATH);
             return;
         }
 
@@ -144,12 +148,11 @@ export default function ServiceContainer() {
   useEffect(() => {
 
     if (!cookies.accessToken) {
+      navigator(AUTH_ABSOLUTE_PATH);
       return;
     }
 
     getSignInUserRequest(cookies.accessToken).then(getSignInUserResponse);
-
-
 
   }, [cookies.accessToken]);
 
