@@ -36,13 +36,15 @@ public class BoardEntity {
     private Integer viewCount;
     private String comment;
 
+    //# DTO로 변환하는 역할
+    // PostBoardRequestDto객체와 사용자ID를 받아와서 해당 정보를 기반으로 BoardEntity객체 생성 -> DTO로 변환함
     public BoardEntity(PostBoardRequestDto dto, String userId) {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
-        this.status = false;
-        this.title = dto.getTitle();
+        this.status = false;    
+        this.title = dto.getTitle(); 
         this.contents = dto.getContents();
         this.writerId = userId;
         this.writeDatetime = writeDatetime;
