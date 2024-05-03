@@ -66,7 +66,7 @@ export default function QnaList() {
         </div>
       </div>
       <div className='qna-list-bottom'>
-        <div></div>
+        <div style={{ width: '299px' }}></div>
         <div className='qna-list-pagenation'>
           <div className='qna-list-page-left'></div>
           <div className='qna-list-page-box'>
@@ -79,7 +79,7 @@ export default function QnaList() {
           <div className='qna-list-search-input-box'>
             <input className='qna-list-search-input' />
           </div>
-          <div className='disable-button'>검색</div>
+          <div className='disable-button' >검색</div>
         </div>
       </div>
     </div>
