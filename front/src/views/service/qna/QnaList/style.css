@@ -1,0 +1,51 @@
+#qna-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.qna-list-top {
+    /* 가로로 */
+    display: flex;
+    justify-content: space-between;
+    /* 수평 위치정렬, 가로로 끝 위치 */
+    align-items: flex-end;
+}
+
+.qna-list-sizez-text {
+    font-size: 16px;
+    font-weight: 400;
+
+    color: rgba(138, 146, 166, 1);
+}
+
+.qna-list-sizez-text .emphasis {
+    color: rgba(64, 64, 64, 1);
+}
+
+.qna-lise-top-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.qna-list-top-admin-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
+    color: rgba(64, 64, 64, 1);
+}
+
+.qna-list-table {
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.qna-list-table-th {
+    display: flex;
+    align-items: center;
+    gap: 95px;
+    padding: 15px 24px;
+}
