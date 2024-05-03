@@ -1,5 +1,6 @@
 #qna-list-wrapper {
-    
+    margin: 0 auto;
+    max-width: 1136px;
     display: flex;
     flex-direction: column;
     gap: 16px;

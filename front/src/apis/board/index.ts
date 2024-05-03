@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { PostBoardRequestDto } from './dto/request';
-import { GET_BOARD_LIST_URL, GET_SEARCH_BOARD_LIST_URL, POST_BOARD_REQUEST_URL } from 'src/constant';
+import { GET_BOARD_LIST_URL, GET_SEARCH_BOARD_LIST_URL, POST_BOARD_REQUEST_URL } from 'src/constant/Index';
 import { bearerAuthorization, requestErrorHandler, requestHandler } from '..';
 import ResponseDto from '../response.dto';
 import { GetBoardListResponseDto, GetSearchBoardListResponseDto } from './dto/response';
