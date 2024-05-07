@@ -114,7 +114,7 @@ export default function QnaList() {
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
     };
-2
+
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
 
         const message =
