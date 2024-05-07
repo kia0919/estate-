@@ -50,4 +50,8 @@ public class BoardEntity {
         this.writeDatetime = writeDatetime;
         this.viewCount = 0;
     }
+
+    public void increaseViewCount () {
+        this.viewCount++;
+    }
 }

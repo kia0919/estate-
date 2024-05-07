@@ -16,6 +16,7 @@ public interface ResponseMessage {
     String VALIDATION_FAILED = "Varidation Failed.";
     String DUPLICATED_ID = "Duplicatied Id.";
     String DUPLICATED_EMAIL = "Duplicatied Email.";
+    String NO_EXIST_BOARD = "No Exist Board.";
     String SIGN_IN_FAILED = "Sign in Failed.";
     String AUTHENTICATION_FAILED = "Authentication Failed.";
     String TOKEN_CREATION_FAILED = "Token creation Failed.";
