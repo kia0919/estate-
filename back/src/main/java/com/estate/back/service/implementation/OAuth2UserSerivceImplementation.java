@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
+//# 사용자의 로그인을 처리하고, 시스템에 사용자를 등록하며, 기본적인 권한을 할당하여 웹 애플리케이션에 접근을 허용.
+
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserSerivceImplementation extends DefaultOAuth2UserService {
