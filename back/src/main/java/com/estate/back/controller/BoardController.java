@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
+import com.estate.back.dto.request.board.PostCommentRequestDto;
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.board.GetBoardListResponseDto;
 import com.estate.back.dto.response.board.GetBoardResponseDto;
@@ -29,20 +30,30 @@ public class BoardController {
 
     @PostMapping("/")
     ResponseEntity<ResponseDto> postBoard (
-        @RequestBody @Valid PostBoardRequestDto requestBody,@AuthenticationPrincipal String userId
-    ){
+        @RequestBody @Valid PostBoardRequestDto requestBody,
+        @AuthenticationPrincipal String userId
+    ) {
         ResponseEntity<ResponseDto> response = boardService.postBoard(requestBody, userId);
+        return response;
+    }
+
+    @PostMapping("/{receptionNumber}/comment")
+    public ResponseEntity<ResponseDto> postComment (
+        @RequestBody @Valid PostCommentRequestDto requestBody,
+        @PathVariable("receptionNumber") int receptionNumber
+    ) {
+        ResponseEntity<ResponseDto> response = boardService.postComment(requestBody, receptionNumber);
         return response;
     }
 
     @GetMapping("/list")
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList () {
-        ResponseEntity <? super GetBoardListResponseDto> response = boardService.getBoardList();
+        ResponseEntity<? super GetBoardListResponseDto> response = boardService.getBoardList();
         return response;
     }
 
     @GetMapping("/list/{searchWord}")
-    public ResponseEntity<? super GetSearchBoardListResponseDto> getSarchBoardList (
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList (
         @PathVariable("searchWord") String searchWord
     ) {
         ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(searchWord);
@@ -50,7 +61,7 @@ public class BoardController {
     }
 
     @GetMapping("/{receptionNumber}")
-    public ResponseEntity<? super GetBoardResponseDto> getBoard(
+    public ResponseEntity<? super GetBoardResponseDto> getBoard (
         @PathVariable("receptionNumber") int receptionNumber
     ) {
         ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(receptionNumber);

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
+import com.estate.back.dto.request.board.PostCommentRequestDto;
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.board.GetBoardListResponseDto;
 import com.estate.back.dto.response.board.GetBoardResponseDto;
@@ -19,9 +20,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImplimentation implements BoardService {
-    
-    // 의존성 주입
+public class BoardServiceImplementation implements BoardService {
+
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
@@ -31,20 +31,16 @@ public class BoardServiceImplimentation implements BoardService {
         try {
 
             boolean isExistUser = userRepository.existsByUserId(userId);
-            // 만약에 false이면은 return ResponseDto.authenticationFailed 반환
             if (!isExistUser) return ResponseDto.authenticationFailed();
 
-            // BoardEntity 생성 위의 dto와 userId를 가져옴
             BoardEntity boardEntity = new BoardEntity(dto, userId);
             boardRepository.save(boardEntity);
 
-        // catch: 발생하는 예외를 출력, databaseError를 반환
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        
-        // Try블럭이 정상 실행 시 ResponseDto에 있는 success를 반환
+
         return ResponseDto.success();
 
     }
@@ -55,36 +51,28 @@ public class BoardServiceImplimentation implements BoardService {
         try {
 
             List<BoardEntity> boardEntities = boardRepository.findByOrderByReceptionNumberDesc();
-
             return GetBoardListResponseDto.success(boardEntities);
 
-        }catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-
-
-    }
-
-    //# Search service
-    // SELECT * FROM board(board에서 작업)
-    // WHERE(조건) title LIKE '%searchWord%'
-    // ORDER BY reception_number DESC;
-
-    // findByTitleContainsOrderByReceptionNumberDesc();
-    @Override
-    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord) {
-
-        try {
-
-            List<BoardEntity> boardEntities = boardRepository.findByTitleContainsOrderByReceptionNumberDesc(searchWord);
-            return GetSearchBoardListResponseDto.success(boardEntities);
-            
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
+    }
+
+    @Override
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord) {
         
+        try {
+
+            List<BoardEntity> boardEntities = boardRepository.findByTitleContainsOrderByReceptionNumberDesc(searchWord);
+            return GetSearchBoardListResponseDto.success(boardEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
     }
 
     @Override
@@ -101,22 +89,47 @@ public class BoardServiceImplimentation implements BoardService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
+        
     }
 
     @Override
     public ResponseEntity<ResponseDto> increaseViewCount(int receptionNumber) {
-
+        
         try {
 
             BoardEntity boardEntity = boardRepository.findByReceptionNumber(receptionNumber);
-            if(boardEntity == null) return ResponseDto.noExistBoard();
+            if (boardEntity == null) return ResponseDto.noExistBoard();
 
             boardEntity.increaseViewCount();
             boardRepository.save(boardEntity);
-            
 
-        }catch (Exception exception) {
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, int receptionNumber) {
+        
+        try {
+
+            BoardEntity boardEntity = boardRepository.findByReceptionNumber(receptionNumber);
+            if (boardEntity == null) return ResponseDto.noExistBoard();
+
+            boolean status = boardEntity.getStatus();
+            if (status) return ResponseDto.writtenComment();
+
+            String comment = dto.getComment();
+            boardEntity.setStatus(true);
+            boardEntity.setComment(comment);
+
+            boardRepository.save(boardEntity);
+
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }

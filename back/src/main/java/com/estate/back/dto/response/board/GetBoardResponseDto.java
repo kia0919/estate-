@@ -16,13 +16,12 @@ public class GetBoardResponseDto extends ResponseDto {
     private Integer receptionNumber;
     private Boolean status;
     private String title;
-    private String wirterId;
-    private String wrtieDatetime;
+    private String writerId;
+    private String writeDatetime;
     private Integer viewCount;
     private String contents;
     private String comment;
 
-    // 생성자 작성
     private GetBoardResponseDto(BoardEntity boardEntity) throws Exception {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         String writeDatetime = ChangeDateFormatUtil.changeYYYYMMDD(boardEntity.getWriteDatetime());
@@ -30,13 +29,13 @@ public class GetBoardResponseDto extends ResponseDto {
         this.receptionNumber = boardEntity.getReceptionNumber();
         this.status = boardEntity.getStatus();
         this.title = boardEntity.getTitle();
-        this.wirterId = boardEntity.getWriterId();
-        this.wrtieDatetime = writeDatetime;
+        this.writerId = boardEntity.getWriterId();
+        this.writeDatetime = writeDatetime;
         this.viewCount = boardEntity.getViewCount();
         this.contents = boardEntity.getContents();
         this.comment = boardEntity.getComment();
     }
-    // 성공에 대한 
+    // 성공에 대한
     public static ResponseEntity<GetBoardResponseDto> success(BoardEntity boardEntity) throws Exception {
         GetBoardResponseDto responseBody = new GetBoardResponseDto(boardEntity);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);

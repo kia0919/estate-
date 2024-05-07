@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/", "/api/v1/auth/**", "/oauth2/callback/*").permitAll()
                 // "/api/v1/board/" 여기에 해당하는 것만, hasRole(USER): USER권한
                 .requestMatchers("/api/v1/board/").hasRole("USER")
+                .requestMatchers("/api/v1/board/*/comment").hasRole("ADMIN")
                 // .anyRequest().authenticated(): 위에서 정한 경로외의 요청은 모두 인증이 필요함.
                 .anyRequest().authenticated()
             )
