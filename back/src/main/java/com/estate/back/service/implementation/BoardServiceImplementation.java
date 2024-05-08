@@ -149,11 +149,11 @@ public class BoardServiceImplementation implements BoardService {
 
             String writerId = boardEntity.getWriterId();
             boolean isWriter = userId.equals(writerId);
-            if(!isWriter) return ResponseDto.authorizationFailed();
+            if (!isWriter) return ResponseDto.authorizationFailed();
 
             boardRepository.delete(boardEntity);
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -178,7 +178,6 @@ public class BoardServiceImplementation implements BoardService {
             if (status) return ResponseDto.writtenComment();
 
             boardEntity.update(dto);
-
             boardRepository.save(boardEntity);
 
         } catch (Exception exception) {
