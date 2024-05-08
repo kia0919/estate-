@@ -83,6 +83,8 @@ export default function QnaList() {
     };
 
     const changeBoardList = (boardList: BoardListItem[]) => {
+        // filter: 배열에서 필터함수를 호출하면 콜백함수를 전달받음, item, index를 받을수 있음 true, false형태의 논리값만 반환해야 함
+        if (isToggleOn) boardList = boardList.filter(board => !board.status);
         setBoardList(boardList);
 
         const totalLenght = boardList.length;
@@ -113,6 +115,10 @@ export default function QnaList() {
 
         const { boardList } = result as GetBoardListResponseDto;
         changeBoardList(boardList);
+
+        // 토글이 바뀔때마다 요청을 다시 보내서 새페이지로 이동?
+        setCurrentPage(1);
+        setCurrentSection(1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -179,7 +185,8 @@ export default function QnaList() {
     useEffect(() => {
         if (!cookies.accessToken) return;
         getBoardListRequest(cookies.accessToken).then(getBoardListResponse);
-    }, []);
+        
+    }, [isToggleOn]);
 
     useEffect(() => {
         if (!boardList.length) return;

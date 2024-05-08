@@ -2,6 +2,7 @@ package com.estate.back.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,4 +77,12 @@ public class BoardController {
         return response;
     }
 
+    @DeleteMapping("/{receptionNumber}")
+    public ResponseEntity<ResponseDto> deleteBoard (
+        @PathVariable("receptionNumber") int receptionNumber,
+        @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<ResponseDto> response = boardService.deleteBoard(receptionNumber, userId);
+        return response;
+    }
 }

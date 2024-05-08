@@ -5,7 +5,7 @@ import { getBoardRequest, increaseViewCountRequest, PostCommentRequest } from 's
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import ResponseDto from 'src/apis/response.dto';
-import { AUTH_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH } from 'src/constant/Index';
+import { AUTH_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH, QNA_UPDATE_ABSOLUTE_PATH } from 'src/constant/Index';
 import { GetBoardResponseDto } from 'src/apis/board/dto/response';
 import { PostCommentRequestDto } from 'src/apis/board/dto/request';
 
@@ -118,6 +118,26 @@ export default function QnaDetail() {
         const requestBody: PostCommentRequestDto = { comment };
         PostCommentRequest(receptionNumber, requestBody, cookies.accessToken).then(postCommentResponse);
     };
+
+    const onListClickHandler = () => {
+        // 페이지 이동
+        navigator(QNA_LIST_ABSOLUTE_PATH);
+    };
+
+    const onUpdateClickHandler = () => {
+        // receptionNumber가 존재하지 않거나 또는 liginUserId와 writerId가 서로 다르다면 return
+        if (!receptionNumber || loginUserId !== writerId || status) return;
+        // 페이지 이동
+        navigator(QNA_UPDATE_ABSOLUTE_PATH(receptionNumber));
+    };
+
+    const onDeleteClickHandler = () => {
+        if (!receptionNumber || loginUserId !== writerId) return;
+        const isConfirm = window.confirm('정말로 삭제하시겠습니까?');
+        if (!isConfirm) return;
+
+        alert('삭제');
+    };
     
     //                    effect                    //
     useEffect(() => {
@@ -158,11 +178,11 @@ export default function QnaDetail() {
             </div>
             }
             <div className='qna-detail-button-box'>
-                <div className='primary-button'>목록보기</div>
+                <div className='primary-button' onClick={onListClickHandler}>목록보기</div>
                 {loginUserId === writerId && 
                 <div className='qna-detail-owner-button-box'>
-                    <div className='second-button'>수정</div>
-                    <div className='error-button'>삭제</div>
+                    {!status && <div className='second-button' onClick={onUpdateClickHandler}>수정</div>}
+                    <div className='error-button' onClick={onDeleteClickHandler}>삭제</div>
                 </div>
                 }
             </div>
