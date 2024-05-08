@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import './style.css'
 import { useUserStore } from 'src/stores';
-import { deleteBoardRequest, getBoardRequest, increaseViewCountRequest, PostCommentRequest } from 'src/apis/board';
+import { deleteBoardRequest, getBoardRequest, increaseViewCountRequest, postCommentRequest } from 'src/apis/board';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import ResponseDto from 'src/apis/response.dto';
@@ -99,13 +99,14 @@ export default function QnaDetail() {
         getBoardRequest(receptionNumber, cookies.accessToken).then(getBoardResponse);
 
     };
-    
+
     const deleteBoardResponse = (result: ResponseDto | null) => {
-        const message =
+
+        const message = 
             !result ? '서버에 문제가 있습니다.' :
             result.code === 'AF' ? '권한이 없습니다.' :
-            result.code === 'VF' ? '올바르지 않은 접수 번호 입니다.' :
-            result.code === 'NB' ? '존재하지 않는 접수 번호 입니다.' :
+            result.code === 'VF' ? '올바르지 않은 접수 번호입니다.' :
+            result.code === 'NB' ? '존재하지 않는 접수 번호입니다.' :
             result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         if (!result || result.code !== 'SU') {
@@ -114,7 +115,7 @@ export default function QnaDetail() {
         }
 
         navigator(QNA_LIST_ABSOLUTE_PATH);
-        
+
     };
 
     //                    event handler                    //
@@ -122,8 +123,7 @@ export default function QnaDetail() {
         if (status || loginUserRole !== 'ROLE_ADMIN') return;
         const comment = event.target.value;
         setComment(comment);
-        
-        // split: 문자를 잘라서 배열로 만들어주는 것, \을 기준으로 잘라서 배열로 만듬
+
         const commentRows = comment.split('\n').length;
         setCommentRows(commentRows);
     };
@@ -133,18 +133,15 @@ export default function QnaDetail() {
         if (!receptionNumber || loginUserRole !== 'ROLE_ADMIN' || !cookies.accessToken) return;
 
         const requestBody: PostCommentRequestDto = { comment };
-        PostCommentRequest(receptionNumber, requestBody, cookies.accessToken).then(postCommentResponse);
+        postCommentRequest(receptionNumber, requestBody, cookies.accessToken).then(postCommentResponse);
     };
 
     const onListClickHandler = () => {
-        // 페이지 이동
         navigator(QNA_LIST_ABSOLUTE_PATH);
     };
 
     const onUpdateClickHandler = () => {
-        // receptionNumber가 존재하지 않거나 또는 liginUserId와 writerId가 서로 다르다면 return
         if (!receptionNumber || loginUserId !== writerId || status) return;
-        // 페이지 이동
         navigator(QNA_UPDATE_ABSOLUTE_PATH(receptionNumber));
     };
 
@@ -196,7 +193,7 @@ export default function QnaDetail() {
             }
             <div className='qna-detail-button-box'>
                 <div className='primary-button' onClick={onListClickHandler}>목록보기</div>
-                {loginUserId === writerId && 
+                {loginUserId === writerId && loginUserRole === 'ROLE_USER' &&
                 <div className='qna-detail-owner-button-box'>
                     {!status && <div className='second-button' onClick={onUpdateClickHandler}>수정</div>}
                     <div className='error-button' onClick={onDeleteClickHandler}>삭제</div>

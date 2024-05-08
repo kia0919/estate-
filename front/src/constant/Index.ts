@@ -1,6 +1,3 @@
-// # 공통 상수, 공통 함수, 공통 타입 생성
-// - 화면 URL 생성?
-
 // description : Navigation URL PATH 
 export const SNS_PATH = '/sns/:accessToken/:expires';
 export const AUTH_PATH = '/authentication';
@@ -39,14 +36,11 @@ export const GET_SIGN_IN_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const SERVER_BOARD_MODULE_URL = `${SERVER_API_URL}/board`;
 
 export const POST_BOARD_REQUEST_URL = `${SERVER_BOARD_MODULE_URL}/`;
-
 export const POST_COMMENT_REQUEST_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}/comment`;
-
-export const PUT_BOARD_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}`;
-
 export const GET_BOARD_LIST_URL = `${SERVER_BOARD_MODULE_URL}/list`;
-export const GET_SEARCH_BOARD_LIST_URL = (searchWord: string) => `${SERVER_BOARD_MODULE_URL}/list/${searchWord}`;
-export const GET_BOARD_URL = (receptionNumber:number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}`;
+export const GET_SEARCH_BOARD_LIST_URL = `${SERVER_BOARD_MODULE_URL}/list/search`;
+export const GET_BOARD_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}`;
+export const PUT_BOARD_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}`;
 export const INCREASE_VIEW_COUNT_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}/increase-view-count`;
 export const DELETE_BOARD_URL = (receptionNumber: number | string) => `${SERVER_BOARD_MODULE_URL}/${receptionNumber}`;
 
