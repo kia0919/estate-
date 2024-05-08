@@ -38,11 +38,15 @@ export default function QnaUpdate() {
             return;
         }
 
-        const { writerId, title, contents } = result as GetBoardResponseDto;
+        const { writerId, title, contents, status } = result as GetBoardResponseDto;
         if (writerId !== loginUserId) {
             alert('권한이 없습니다.');
             navigator(QNA_LIST_ABSOLUTE_PATH);
             return;
+        }
+        if (status) {
+          alert('답변이 완료된 게시물입니다.')
+          return;
         }
 
         setTitle(title);
@@ -74,8 +78,11 @@ export default function QnaUpdate() {
     };
 
     //                    effect                    //
+    let effectFlag = false;
     useEffect(() => {
         if (!receptionNumber || !cookies.accessToken) return;
+        if (effectFlag) return;
+        effectFlag = true;
         getBoardRequest(receptionNumber, cookies.accessToken).then(getBoardResponse);
     }, []);
     

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Date;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
+import com.estate.back.dto.response.board.PutBoardRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,8 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//# estate 데이터베이스의 board 테이블과 매핑되는 Entity 클래스
-
+// estate 데이터베이스의 board 테이블과 매핑되는 Entity 클래스
 @Entity(name="board")
 @Table(name="board")
 @Getter
@@ -36,22 +36,25 @@ public class BoardEntity {
     private Integer viewCount;
     private String comment;
 
-    //# DTO로 변환하는 역할
-    // PostBoardRequestDto객체와 사용자ID를 받아와서 해당 정보를 기반으로 BoardEntity객체 생성 -> DTO로 변환함
     public BoardEntity(PostBoardRequestDto dto, String userId) {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
-        this.status = false;    
-        this.title = dto.getTitle(); 
+        this.status = false;
+        this.title = dto.getTitle();
         this.contents = dto.getContents();
         this.writerId = userId;
         this.writeDatetime = writeDatetime;
         this.viewCount = 0;
     }
 
-    public void increaseViewCount () {
+    public void increaseViewCount() {
         this.viewCount++;
+    }
+
+    public void update(PutBoardRequestDto dto) {
+        this.title = dto.getTitle();
+        this.contents = dto.getContents();
     }
 }

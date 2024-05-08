@@ -8,6 +8,7 @@ import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.board.GetBoardListResponseDto;
 import com.estate.back.dto.response.board.GetBoardResponseDto;
 import com.estate.back.dto.response.board.GetSearchBoardListResponseDto;
+import com.estate.back.dto.response.board.PutBoardRequestDto;
 
 public interface BoardService {
     
@@ -17,6 +18,8 @@ public interface BoardService {
     ResponseEntity<? super GetBoardListResponseDto> getBoardList();
     ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord);
     ResponseEntity<? super GetBoardResponseDto> getBoard(int receptionNumber);
+
+    ResponseEntity<ResponseDto> putBoard(PutBoardRequestDto dto, int receptionNumber, String userId);
 
     ResponseEntity<ResponseDto> increaseViewCount(int receptionNumber);
 
