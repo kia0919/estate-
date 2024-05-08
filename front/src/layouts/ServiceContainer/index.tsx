@@ -39,12 +39,10 @@ function TopBar({ path }: Props) {
 
   //                    event handler                    //
   const onLogoutClickHandler = () => {
-    // 이름이 'accessToken'인 토큰을 제거, 제거할 경로를 '/'로 해서 모든 경로에서 해당 쿠키를 제거
     removeCookie('accessToken', { path: '/' });
-    // 토큰이 제거가 되면은 해당 경로로 이동
-    // AUTH_ABSOLUTE_PATH: 로그인 화면
     navigator(AUTH_ABSOLUTE_PATH);
-    };
+};
+    
 
   //                    render                    //
   return (
@@ -58,7 +56,7 @@ function TopBar({ path }: Props) {
         </div>
     </div>
     </>
-);
+  );
 }
 
 //                    component                    //
@@ -69,7 +67,10 @@ function SideNavigation({ path }: Props) {
   const ratioClass = `side-navigation-item${path === '비율 계산' ? ' active' : ''}`;
   const qnaClass = `side-navigation-item${path === 'Q&A 게시판' ? ' active' : ''}`;
 
-  //                    render                    //
+  //                    state                    //
+  const { pathname } = useLocation();
+
+  //                    function                    //
   const navigator = useNavigate();
 
   //                    event handler                    //
@@ -166,9 +167,5 @@ export default function ServiceContainer() {
             <Outlet />
         </div>
     </div>
-
-
-
-
   )
 }

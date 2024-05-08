@@ -4,7 +4,7 @@ import './style.css'
 import { useUserStore } from 'src/stores';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
-import { PutBoardRequest, getBoardRequest } from 'src/apis/board';
+import { getBoardRequest, putBoardRequest } from 'src/apis/board';
 import { GetBoardResponseDto } from 'src/apis/board/dto/response';
 import ResponseDto from 'src/apis/response.dto';
 import { QNA_DEATIL_ABSOLUTE_PATH, QNA_LIST_ABSOLUTE_PATH } from 'src/constant/Index';
@@ -97,7 +97,7 @@ export default function QnaUpdate() {
         if (!title.trim()|| !contents.trim()) return;
 
         const requestBody: PutBoardRequestDto = {title, contents};
-        PutBoardRequest(receptionNumber, requestBody, cookies.accessToken).then(putBoardResponse);
+        putBoardRequest(receptionNumber, requestBody, cookies.accessToken).then(putBoardResponse);
     };
 
     //                    effect                    //
