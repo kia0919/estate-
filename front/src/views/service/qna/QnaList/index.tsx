@@ -117,8 +117,8 @@ export default function QnaList() {
         changeBoardList(boardList);
 
         // 토글이 바뀔때마다 요청을 다시 보내서 새페이지로 이동?
-        setCurrentPage(1);
-        setCurrentSection(1);
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
     };
 
     const getSearchBoardListResponse = (result: GetSearchBoardListResponseDto | ResponseDto | null) => {
@@ -137,8 +137,9 @@ export default function QnaList() {
 
         const { boardList } = result as GetSearchBoardListResponseDto;
         changeBoardList(boardList);
-        setCurrentPage(1);
-        setCurrentSection(1);
+
+        setCurrentPage(!boardList.length ? 0 : 1);
+        setCurrentSection(!boardList.length ? 0 : 1);
 
     };
 
@@ -158,7 +159,7 @@ export default function QnaList() {
     };
 
     const onPreSectionClickHandler = () => {
-        if (currentSection === 1) return;
+        if (currentSection <= 1) return;
         setCurrentSection(currentSection - 1);
         setCurrentPage((currentSection - 1) * COUNT_PER_SECTION);
     };

@@ -58,7 +58,7 @@ export default function QnaWrite() {
 
   const onPostButtonClickHandler = () => {
     // 존재하지 않으면 return
-    if(!title || !contents) return;
+    if(!title.trim() || !contents.trim()) return;
     if(!cookies.accessToken) return;
 
     const requestBody: PostBoardRequestDto = { title, contents };
