@@ -16,7 +16,7 @@
     gap: 12px;
 }
 
-.local-orign-text {
+.local-origin-text {
     font-size: 13px;
     font-weight: 400;
     line-height: 130%;
@@ -45,14 +45,14 @@
 .local-card-title {
     font-size: 16px;
     font-weight: 700;
-    
+
     color: rgba(64, 64, 64, 1);
 }
 
 .local-card-unit {
     font-size: 13px;
     font-weight: 400;
-    line-height: 130px;
+    line-height: 130%;
 
     color: rgba(64, 64, 64, 1);
 }
