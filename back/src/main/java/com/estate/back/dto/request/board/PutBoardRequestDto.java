@@ -1,4 +1,4 @@
-package com.estate.back.dto.response.board;
+package com.estate.back.dto.request.board;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

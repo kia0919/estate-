@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
 import com.estate.back.dto.request.board.PostCommentRequestDto;
-
+import com.estate.back.dto.request.board.PutBoardRequestDto;
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.board.GetBoardListResponseDto;
 import com.estate.back.dto.response.board.GetBoardResponseDto;
 import com.estate.back.dto.response.board.GetSearchBoardListResponseDto;
-import com.estate.back.dto.response.board.PutBoardRequestDto;
 import com.estate.back.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -57,11 +56,11 @@ public class BoardController {
         return response;
     }
 
-    @GetMapping("/list/{search}")
+    @GetMapping("/list/search")
     public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList (
-        @RequestParam("Word") String Word
+        @RequestParam("word") String word
     ) {
-        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(Word);
+        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(word);
         return response;
     }
 

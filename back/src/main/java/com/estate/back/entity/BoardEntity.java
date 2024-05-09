@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Date;
 
 import com.estate.back.dto.request.board.PostBoardRequestDto;
-import com.estate.back.dto.response.board.PutBoardRequestDto;
+import com.estate.back.dto.request.board.PutBoardRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
