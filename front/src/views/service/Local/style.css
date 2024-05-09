@@ -1,0 +1,18 @@
+#local-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.local-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: end; /* 교차축  기준 끝 지점 */
+}
+
+.local-search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+

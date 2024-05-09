@@ -1,0 +1,11 @@
+.select-box {
+    display: flex;
+    align-items: center;
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 6px;
+    padding: 8px 16px;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
