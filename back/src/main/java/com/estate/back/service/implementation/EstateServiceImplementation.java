@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.estate.back.dto.response.ResponseDto;
 import com.estate.back.dto.response.estate.GetLocalDataResponseDto;
+import com.estate.back.dto.response.estate.GetRatioDataResponseDto;
 import com.estate.back.repository.EstateRepository;
 import com.estate.back.repository.resultSet.GetLocalDataResultSet;
+import com.estate.back.repository.resultSet.GetRatioDataResultSet;
 import com.estate.back.service.EstateService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,21 @@ public class EstateServiceImplementation implements EstateService {
 
             List<GetLocalDataResultSet> resultSets = estateRepository.getLocalData(local);
             return GetLocalDataResponseDto.success(resultSets);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<? super GetRatioDataResponseDto> getRatioData(String local) {
+        
+        try {
+            
+            List<GetRatioDataResultSet> resultSets = estateRepository.getRatioData(local);
+            return GetRatioDataResponseDto.success(resultSets);
 
         } catch (Exception exception) {
             exception.printStackTrace();
